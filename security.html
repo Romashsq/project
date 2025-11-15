@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Курс: Безопасность в Web3 - FLOW</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --primary: #9B2FFF;
+            --white: #FFFFFF;
+            --light-bg: #f9f7ff;
+            --dark-bg: #0f0f23;
+            --dark-card: #1a1a2e;
+            --text-dark: #333;
+            --text-light: #f0f0f0;
+            --shadow: 0 10px 30px rgba(155, 47, 255, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        body.dark-mode header {
+            background: var(--dark-card);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .back-btn:hover {
+            transform: translateX(-5px);
+        }
+
+        /* Course Header */
+        .course-header {
+            background: linear-gradient(135deg, var(--primary), #6a11cb);
+            color: var(--white);
+            padding: 60px 0;
+            margin-bottom: 50px;
+        }
+
+        .course-info {
+            text-align: center;
+        }
+
+        .course-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .course-title {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .course-description {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 25px;
+            line-height: 1.6;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Lessons Section */
+        .lessons-section {
+            padding: 50px 0 100px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2rem;
+        }
+
+        .section-title span {
+            color: var(--primary);
+        }
+
+        .lessons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .lesson-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        body.dark-mode .lesson-card {
+            background: var(--dark-card);
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(155, 47, 255, 0.2);
+        }
+
+        .lesson-number {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .lesson-content {
+            flex: 1;
+        }
+
+        .lesson-title {
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+
+        .lesson-description {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        body.dark-mode .lesson-description {
+            color: #aaa;
+        }
+
+        .lesson-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        body.dark-mode .lesson-meta {
+            color: #777;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .lesson-action {
+            flex-shrink: 0;
+        }
+
+        .start-btn {
+            padding: 10px 20px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .start-btn:hover {
+            background: #7a1fd1;
+            transform: translateY(-2px);
+        }
+
+        .completed .lesson-number {
+            background: #10b981;
+        }
+
+        .completed .start-btn {
+            background: #10b981;
+        }
+
+        .locked .lesson-number {
+            background: #6b7280;
+        }
+
+        .locked .start-btn {
+            background: #6b7280;
+            cursor: not-allowed;
+        }
+
+        /* Progress Section */
+        .progress-section {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow);
+        }
+
+        body.dark-mode .progress-section {
+            background: var(--dark-card);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .progress-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .progress-percent {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        body.dark-mode .progress-bar {
+            background: #374151;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-bg);
+            color: var(--text-light);
+            padding: 50px 0 20px;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column a {
+            color: #aaa;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+            color: #777;
+        }
+
+        /* Course Specific Colors */
+        .phantom-course .course-header {
+            background: linear-gradient(135deg, #ab5cf5, #9B2FFF);
+        }
+
+        .security-course .course-header {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .security-course .lesson-number,
+        .security-course .start-btn:not(.locked .start-btn) {
+            background: #10b981;
+        }
+
+        .security-course .start-btn:hover:not(.locked .start-btn) {
+            background: #059669;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .lesson-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .lesson-meta {
+                justify-content: center;
+            }
+
+            .course-title {
+                font-size: 2rem;
+            }
+
+            .course-meta {
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .course-title {
+                font-size: 1.7rem;
+            }
+
+            .lesson-title {
+                font-size: 1.1rem;
+            }
+
+            .lesson-description {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body class="security-course">
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">
+                    <img src="loogo.png" alt="FLOW Logo">
+                    
+                </a>
+                <a href="index.html#courses-section" class="back-btn">
+                    <i class="fas fa-arrow-left"></i>
+                    Назад к курсам
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Course Header -->
+    <section class="course-header">
+        <div class="container">
+            <div class="course-info">
+                <div class="course-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h1 class="course-title">Безопасность в Web3</h1>
+                <p class="course-description">
+                    Критически важные знания для защиты ваших активов в Web3. Научитесь распознавать и избегать скамы и фишинг атаки.
+                </p>
+                <div class="course-meta">
+                    <div class="meta-item">
+                        <i class="far fa-clock"></i>
+                        <span>2 часа</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="far fa-file-alt"></i>
+                        <span>5 уроков</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-signal"></i>
+                        <span>Обязательно для всех</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- Progress Section -->
+        <section class="progress-section">
+            <div class="progress-header">
+                <div class="progress-title">Ваш прогресс</div>
+                <div class="progress-percent">0%</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="security-progress"></div>
+            </div>
+        </section>
+
+        <!-- Lessons Section -->
+        <section class="lessons-section">
+            <h2 class="section-title">Уроки <span>курса</span></h2>
+            
+            <div class="lessons-container">
+                <!-- Lesson 1 -->
+                <div class="lesson-card">
+                    <div class="lesson-number">1</div>
+                    <div class="lesson-content">
+                        <h3 class="lesson-title">Основы безопасности кошелька</h3>
+                        <p class="lesson-description">
+                            Правила хранения сид-фразы, создание надежных паролей и настройка двухфакторной аутентификации.
+                        </p>
+                        <div class="lesson-meta">
+                            <div class="meta-item">
+                                <i class="far fa-clock"></i>
+                                <span>25 мин</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-key"></i>
+                                <span>Фундамент</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lesson-action">
+                        <a href="security-lesson-1.html" class="start-btn">
+                            <i class="fas fa-play"></i>
+                            Начать урок
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Lesson 2 -->
+                <div class="lesson-card locked">
+                    <div class="lesson-number">2</div>
+                    <div class="lesson-content">
+                        <h3 class="lesson-title">Распознавание фишинг атак</h3>
+                        <p class="lesson-description">
+                            Научитесь определять фишинг сайты, поддельные приложения и мошеннические ссылки в социальных сетях.
+                        </p>
+                        <div class="lesson-meta">
+                            <div class="meta-item">
+                                <i class="far fa-clock"></i>
+                                <span>30 мин</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-fish"></i>
+                                <span>Фишинг</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lesson-action">
+                        <button class="start-btn" disabled>
+                            <i class="fas fa-lock"></i>
+                            Заблокировано
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Lesson 3 -->
+                <div class="lesson-card locked">
+                    <div class="lesson-number">3</div>
+                    <div class="lesson-content">
+                        <h3 class="lesson-title">Безопасность транзакций</h3>
+                        <p class="lesson-description">
+                            Проверка адресов, понимание смарт-контрактов и разрешений. Как безопасно подписывать транзакции.
+                        </p>
+                        <div class="lesson-meta">
+                            <div class="meta-item">
+                                <i class="far fa-clock"></i>
+                                <span>35 мин</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-exchange-alt"></i>
+                                <span>Транзакции</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lesson-action">
+                        <button class="start-btn" disabled>
+                            <i class="fas fa-lock"></i>
+                            Заблокировано
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Lesson 4 -->
+                <div class="lesson-card locked">
+                    <div class="lesson-number">4</div>
+                    <div class="lesson-content">
+                        <h3 class="lesson-title">Анти-скам стратегии</h3>
+                        <p class="lesson-description">
+                            Распознавание скам проектов, rug pull схем и мошеннических инвестиционных предложений.
+                        </p>
+                        <div class="lesson-meta">
+                            <div class="meta-item">
+                                <i class="far fa-clock"></i>
+                                <span>40 мин</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Скамы</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lesson-action">
+                        <button class="start-btn" disabled>
+                            <i class="fas fa-lock"></i>
+                            Заблокировано
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Lesson 5 -->
+                <div class="lesson-card locked">
+                    <div class="lesson-number">5</div>
+                    <div class="lesson-content">
+                        <h3 class="lesson-title">Практический тест безопасности</h3>
+                        <p class="lesson-description">
+                            Проверьте свои знания в реалистичных сценариях. Научитесь применять все изученные техники безопасности.
+                        </p>
+                        <div class="lesson-meta">
+                            <div class="meta-item">
+                                <i class="far fa-clock"></i>
+                                <span>45 мин</span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fas fa-shield-check"></i>
+                                <span>Финальный тест</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="lesson-action">
+                        <button class="start-btn" disabled>
+                            <i class="fas fa-lock"></i>
+                            Заблокировано
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Обучение</h3>
+                    <ul>
+                        <li><a href="#">Путь новичка</a></li>
+                        <li><a href="#">Все курсы</a></li>
+                        <li><a href="#">Инструменты</a></li>
+                        <li><a href="#">Прогресс</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Ресурсы</h3>
+                    <ul>
+                        <li><a href="#">Антискам</a></li>
+                        <li><a href="#">Комьюнити</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">О нас</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Контакты</h3>
+                    <ul>
+                        <li><a href="#">Telegram</a></li>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Поддержка</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 FLOW - Future Learning On Web3. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Анимация прогресс-бара
+        document.addEventListener('DOMContentLoaded', function() {
+            const progressFill = document.getElementById('security-progress');
+            setTimeout(() => {
+                progressFill.style.width = '0%';
+            }, 500);
+        });
+
+        // Темная тема
+        const themeToggle = document.createElement('button');
+        themeToggle.innerHTML = '🌙';
+        themeToggle.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        `;
+        
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            themeToggle.innerHTML = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        });
+        
+        document.body.appendChild(themeToggle);
+    </script>
+</body>
+</html>

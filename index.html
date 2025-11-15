@@ -878,6 +878,11 @@
             width: 65px;
             height: 65px;
             background: transparent;        }
+        
+        a {
+           text-decoration: none;
+           color: #0f0f23;
+        }
     </style>
 </head>
 <body>
@@ -891,7 +896,7 @@
             <nav>
                 <ul>
                     <li><a href="#learning-path">Путь новичка</a></li>
-                    <li><a href="#courses">Курсы</a></li>
+                    <li><a href="#courses-section">Курсы</a></li>
                     <li><a href="#anti-scam">Антискам</a></li>
                     <li><a href="#tools">Инструменты</a></li>
                     <li><a href="#progress">Прогресс</a></li>
@@ -984,11 +989,12 @@
     </section>
 
     <!-- Courses Section -->
-    <section class="courses" id="courses">
+    <section class="courses" id="courses-section">
         <div class="container">
             <h2 class="section-title">Our <span>Courses</span></h2>
-            <div class="courses-grid">
+            <div class="courses-grid" >
                 <div class="course-card">
+                    <a href="blockchain.html">
                     <div class="course-image">
                         <i class="fas fa-link"></i>
                     </div>
@@ -1000,8 +1006,12 @@
                             <span><i class="far fa-file-alt"></i> 5 lessons</span>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="course-card">
+                    <a href="phantomwall.html">
+
+                    
                     <div class="course-image">
                         <i class="fas fa-wallet"></i>
                     </div>
@@ -1013,8 +1023,10 @@
                             <span><i class="far fa-file-alt"></i> 3 lessons</span>
                         </div>
                     </div>
+                    </a>
                 </div>
                 <div class="course-card">
+                    <a href="security.html">
                     <div class="course-image">
                         <i class="fas fa-shield-alt"></i>
                     </div>
@@ -1026,6 +1038,7 @@
                             <span><i class="far fa-file-alt"></i> 6 lessons</span>
                         </div>
                     </div>
+                    </a>
                 </div>
             </div>
         </div>
@@ -1185,113 +1198,133 @@
         </div>
     </footer>
 
-    <script>
-        // Theme Toggle
-        const themeToggle = document.querySelector('.theme-toggle');
-        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+<script>
+    // Theme Toggle
+    const themeToggle = document.querySelector('.theme-toggle');
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    // Check for saved theme or prefered scheme
+    if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && prefersDarkScheme.matches)) {
+        document.body.classList.add('dark-mode');
+        themeToggle.textContent = '☀️';
+    } else {
+        themeToggle.textContent = '🌙';
+    }
+    
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
         
-        // Check for saved theme or prefered scheme
-        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && prefersDarkScheme.matches)) {
-            document.body.classList.add('dark-mode');
+        if (document.body.classList.contains('dark-mode')) {
+            localStorage.setItem('theme', 'dark');
             themeToggle.textContent = '☀️';
         } else {
+            localStorage.setItem('theme', 'light');
             themeToggle.textContent = '🌙';
         }
-        
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            
-            if (document.body.classList.contains('dark-mode')) {
-                localStorage.setItem('theme', 'dark');
-                themeToggle.textContent = '☀️';
-            } else {
-                localStorage.setItem('theme', 'light');
-                themeToggle.textContent = '🌙';
-            }
-        });
+    });
 
-        // Mobile Menu
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const nav = document.querySelector('nav');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            nav.classList.toggle('active');
-        });
+    // Mobile Menu
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const nav = document.querySelector('nav');
+    
+    mobileMenuBtn.addEventListener('click', () => {
+        nav.classList.toggle('active');
+    });
 
-        // Create Particles
-        const particlesContainer = document.getElementById('particles');
-        const particleCount = 20;
+    // Create Particles
+    const particlesContainer = document.getElementById('particles');
+    const particleCount = 20;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
         
-        for (let i = 0; i < particleCount; i++) {
-            const particle = document.createElement('div');
-            particle.classList.add('particle');
-            
-            // Random properties
-            const size = Math.random() * 60 + 20;
-            const left = Math.random() * 100;
-            const top = Math.random() * 100;
-            const delay = Math.random() * 5;
-            
-            particle.style.width = 100
-                        particle.style.height = `${size}px`;
-            particle.style.left = `${left}%`;
-            particle.style.top = `${top}%`;
-            particle.style.animationDelay = `${delay}s`;
-            
-            particlesContainer.appendChild(particle);
-        }
+        // Random properties
+        const size = Math.random() * 60 + 20;
+        const left = Math.random() * 100;
+        const top = Math.random() * 100;
+        const delay = Math.random() * 5;
+        
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${left}%`;
+        particle.style.top = `${top}%`;
+        particle.style.animationDelay = `${delay}s`;
+        
+        particlesContainer.appendChild(particle);
+    }
 
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
+    // Smooth scrolling for anchor links - ИСПРАВЛЕННЫЙ КОД
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+            
+            // Пропускаем ссылки, которые не ведут на существующие элементы
+            if (targetId === '#' || targetId === '#!') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
                 e.preventDefault();
                 
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
                 
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
+                // Close mobile menu if open
+                nav.classList.remove('active');
+                
+                // Обновляем URL без перезагрузки страницы
+                history.pushState(null, null, targetId);
+            }
+            // Если элемент не найден, позволяем ссылке работать стандартно
+        });
+    });
+
+    // Add floating animation to cards on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+
+    // Observe all cards for animation
+    document.querySelectorAll('.feature-card, .course-card, .scam-card, .tool-card').forEach(card => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(card);
+    });
+
+    // Progress bar animation
+    const progressFill = document.querySelector('.progress-fill');
+    if (progressFill) {
+        setTimeout(() => {
+            progressFill.style.width = '65%';
+        }, 500);
+    }
+
+    window.addEventListener('load', function() {
+        if (window.location.hash) {
+            const targetElement = document.querySelector(window.location.hash);
+            if (targetElement) {
+                setTimeout(() => {
                     window.scrollTo({
                         top: targetElement.offsetTop - 80,
                         behavior: 'smooth'
                     });
-                    
-                    // Close mobile menu if open
-                    nav.classList.remove('active');
-                }
-            });
-        });
-
-        // Add floating animation to cards on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        // Observe all cards for animation
-        document.querySelectorAll('.feature-card, .course-card, .scam-card, .tool-card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(20px)';
-            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            observer.observe(card);
-        });
-
-        // Progress bar animation
-        const progressFill = document.querySelector('.progress-fill');
-        if (progressFill) {
-            setTimeout(() => {
-                progressFill.style.width = '65%';
-            }, 500);
+                }, 100);
+            }
         }
-    </script>
+    });
+</script>
 </body>
 </html>
