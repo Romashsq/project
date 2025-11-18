@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLOW - Crypto Fundamentals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #9B2FFF;
+            --white: #FFFFFF;
+            --gradient: linear-gradient(135deg, var(--white) 0%, var(--primary) 100%);
+            --light-bg: #f9f7ff;
+            --dark-bg: #0f0f23;
+            --dark-card: #1a1a2e;
+            --text-dark: #333;
+            --text-light: #f0f0f0;
+            --shadow: 0 10px 30px rgba(155, 47, 255, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            transition: var(--transition);
+        }
+
+        body.dark-mode {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s ease;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            transform: translateY(0);
+        }
+
+        body.dark-mode header {
+            background: rgba(15, 15, 35, 0.95);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
+        }
+
+        header.hidden {
+            transform: translateY(-100%);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 24px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav li {
+            margin-left: 30px;
+            position: relative;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        body.dark-mode nav a {
+            color: var(--text-light);
+        }
+
+        nav a:hover {
+            color: var(--primary);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--white);
+            min-width: 200px;
+            box-shadow: var(--shadow);
+            border-radius: 10px;
+            padding: 10px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: var(--transition);
+            z-index: 1001;
+        }
+
+        body.dark-mode .dropdown-content {
+            background: var(--dark-card);
+        }
+
+        .dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-content a {
+            padding: 10px 20px;
+            display: block;
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .dropdown-content a {
+            color: var(--text-light);
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(155, 47, 255, 0.1);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--text-dark);
+            transition: var(--transition);
+            margin-left: 20px;
+        }
+
+        body.dark-mode .theme-toggle {
+            color: var(--text-light);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--primary);
+            z-index: 1002;
+        }
+
+        .close-menu {
+            display: none;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--primary);
+            cursor: pointer;
+            z-index: 1002;
+        }
+
+        /* Course Header */
+        .course-header {
+            padding: 150px 0 80px;
+            text-align: center;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+            color: white;
+        }
+
+        body:not(.dark-mode) .course-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6B8DD6 100%);
+        }
+
+        .course-header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+        }
+
+        .course-header p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Course Content */
+        .course-content {
+            padding: 80px 0;
+        }
+
+        .lessons-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .lesson-card {
+            background: var(--white);
+            border-radius: 16px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        body.dark-mode .lesson-card {
+            background: var(--dark-card);
+        }
+
+        .lesson-card.locked {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .lesson-card.completed {
+            border-left: 4px solid #4CAF50;
+        }
+
+        .lesson-header {
+            padding: 24px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .lesson-header h3 {
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .lesson-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .lesson-status {
+            font-size: 0.9rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .status-available {
+            background: var(--primary);
+            color: white;
+        }
+
+        .status-locked {
+            background: #ccc;
+            color: #666;
+        }
+
+        .lesson-info {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        body.dark-mode .lesson-info {
+            color: #aaa;
+        }
+
+        .lesson-duration, .lesson-level {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .lesson-actions {
+            padding: 0 30px 24px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: var(--primary);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #8a1fe0;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-completed {
+            background: #4CAF50;
+        }
+
+        .btn-completed:hover {
+            background: #45a049;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            max-width: 900px;
+            margin: 0 auto 40px;
+            background: rgba(155, 47, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(155, 47, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Course Navigation */
+        .course-navigation {
+            display: flex;
+            justify-content: space-between;
+            max-width: 900px;
+            margin: 40px auto 0;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-bg);
+            color: var(--text-light);
+            padding: 80px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column a {
+            color: #aaa;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-column a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #333;
+            color: #777;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .close-menu {
+                display: block;
+            }
+            
+            nav {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: var(--white);
+                padding: 80px 20px 20px;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                transform: translateX(-100%);
+                opacity: 0;
+                transition: all 0.3s ease;
+                z-index: 999;
+                overflow-y: auto;
+            }
+            
+            body.dark-mode nav {
+                background: var(--dark-card);
+            }
+            
+            nav.active {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+            
+            nav li {
+                margin: 15px 0;
+            }
+            
+            .dropdown-content {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                padding-left: 20px;
+                background: transparent;
+                margin-top: 10px;
+            }
+            
+            .dropdown-content a {
+                padding: 8px 0;
+            }
+            
+            .course-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .lesson-header {
+                padding: 20px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .lesson-actions {
+                padding: 0 20px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .course-header h1 {
+                font-size: 2rem;
+            }
+            
+            .lesson-header h3 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body data-course="crypto">
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <img src="loogo.png" alt="FLOW Logo">
+                FLOW
+            </a>
+            <button class="mobile-menu-btn">☰</button>
+            <button class="close-menu">✕</button>
+            <nav>
+                <ul>
+                    <li><a href="index.html#learning-path">Learning Path</a></li>
+                    <li><a href="index.html#courses-section">Courses</a></li>
+                    <li><a href="index.html#more-section">More</a></li>
+                    <li class="dropdown">
+                        <a href="#">Resources <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="crypto-courses.html">Crypto</a>
+                            <a href="scams-courses.html">Scams</a>
+                            <a href="memecoins-courses.html">Memecoins</a>
+                            <a href="security-courses.html">Security</a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <button class="theme-toggle">🌙</button>
+        </div>
+    </header>
+
+    <!-- Course Header -->
+    <section class="course-header">
+        <div class="container">
+            <h1>Crypto Fundamentals</h1>
+            <p>Master the basics of major cryptocurrencies and blockchain networks. Understand SOL, BTC, ETH and other key chains.</p>
+        </div>
+    </section>
+
+    <!-- Course Content -->
+    <section class="course-content">
+        <div class="container">
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span>Course Progress</span>
+                    <span id="progress-percent">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="lessons-container">
+                <!-- Lesson 1 -->
+                <div class="lesson-card" id="lesson-1">
+                    <div class="lesson-header">
+                        <div>
+                            <h3><span class="lesson-number">1</span> SOL - Solana Fundamentals</h3>
+                            <div class="lesson-info">
+                                <div class="lesson-duration">
+                                    <i class="far fa-clock"></i> 45 min
+                                </div>
+                                <div class="lesson-level">
+                                    <i class="fas fa-signal"></i> Beginner
+                                </div>
+                            </div>
+                        </div>
+                        <span class="lesson-status status-available">Available</span>
+                    </div>
+                    <div class="lesson-actions">
+                        <a href="lessonCrypto1.html" class="btn start-lesson" data-lesson="1">Start Lesson</a>
+                    </div>
+                </div>
+
+                <!-- Lesson 2 -->
+                <div class="lesson-card locked" id="lesson-2">
+                    <div class="lesson-header">
+                        <div>
+                            <h3><span class="lesson-number">2</span> BTC - Bitcoin Basics</h3>
+                            <div class="lesson-info">
+                                <div class="lesson-duration">
+                                    <i class="far fa-clock"></i> 35 min
+                                </div>
+                                <div class="lesson-level">
+                                    <i class="fas fa-signal"></i> Beginner
+                                </div>
+                            </div>
+                        </div>
+                        <span class="lesson-status status-locked">Locked</span>
+                    </div>
+                    <div class="lesson-actions">
+                        <button class="btn" disabled>Complete Previous Lesson</button>
+                    </div>
+                </div>
+
+                <!-- Lesson 3 -->
+                <div class="lesson-card locked" id="lesson-3">
+                    <div class="lesson-header">
+                        <div>
+                            <h3><span class="lesson-number">3</span> ETH - Ethereum Ecosystem</h3>
+                            <div class="lesson-info">
+                                <div class="lesson-duration">
+                                    <i class="far fa-clock"></i> 50 min
+                                </div>
+                                <div class="lesson-level">
+                                    <i class="fas fa-signal"></i> Intermediate
+                                </div>
+                            </div>
+                        </div>
+                        <span class="lesson-status status-locked">Locked</span>
+                    </div>
+                    <div class="lesson-actions">
+                        <button class="btn" disabled>Complete Previous Lesson</button>
+                    </div>
+                </div>
+
+                <!-- Lesson 4 -->
+                <div class="lesson-card locked" id="lesson-4">
+                    <div class="lesson-header">
+                        <div>
+                            <h3><span class="lesson-number">4</span> SUI - New Generation Blockchain</h3>
+                            <div class="lesson-info">
+                                <div class="lesson-duration">
+                                    <i class="far fa-clock"></i> 30 min
+                                </div>
+                                <div class="lesson-level">
+                                    <i class="fas fa-signal"></i> Intermediate
+                                </div>
+                            </div>
+                        </div>
+                        <span class="lesson-status status-locked">Locked</span>
+                    </div>
+                    <div class="lesson-actions">
+                        <button class="btn" disabled>Complete Previous Lesson</button>
+                    </div>
+                </div>
+
+                <!-- Lesson 5 -->
+                <div class="lesson-card locked" id="lesson-5">
+                    <div class="lesson-header">
+                        <div>
+                            <h3><span class="lesson-number">5</span> BASE - Coinbase Layer 2</h3>
+                            <div class="lesson-info">
+                                <div class="lesson-duration">
+                                    <i class="far fa-clock"></i> 25 min
+                                </div>
+                                <div class="lesson-level">
+                                    <i class="fas fa-signal"></i> Intermediate
+                                </div>
+                            </div>
+                        </div>
+                        <span class="lesson-status status-locked">Locked</span>
+                    </div>
+                    <div class="lesson-actions">
+                        <button class="btn" disabled>Complete Previous Lesson</button>
+                    </div>
+                </div>
+
+                <!-- Lesson 6 -->
+                <div class="lesson-card locked" id="lesson-6">
+                    <div class="lesson-header">
+                        <div>
+                            <h3><span class="lesson-number">6</span> BNB - Binance Ecosystem</h3>
+                            <div class="lesson-info">
+                                <div class="lesson-duration">
+                                    <i class="far fa-clock"></i> 40 min
+                                </div>
+                                <div class="lesson-level">
+                                    <i class="fas fa-signal"></i> Intermediate
+                                </div>
+                            </div>
+                        </div>
+                        <span class="lesson-status status-locked">Locked</span>
+                    </div>
+                    <div class="lesson-actions">
+                        <button class="btn" disabled>Complete Previous Lesson</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="course-navigation">
+                <a href="courses.html" class="btn">Back to Courses</a>
+                <div id="next-course-container" style="display: none;">
+                    <a href="scams-courses.html" class="btn">Next Course: Scams Protection</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Learning</h3>
+                    <ul>
+                        <li><a href="index.html#learning-path">Learning Path</a></li>
+                        <li><a href="index.html#courses-section">Courses</a></li>
+                        <li><a href="index.html#more-section">Resources</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Categories</h3>
+                    <ul>
+                        <li><a href="crypto-courses.html">Crypto</a></li>
+                        <li><a href="scams-courses.html">Scams</a></li>
+                        <li><a href="memecoins-courses.html">Memecoins</a></li>
+                        <li><a href="security-courses.html">Security</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Discord</a></li>
+                        <li><a href="#">Telegram</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>FLOW</h3>
+                    <p>Future Learning On Web3 - Your safe journey into the decentralized world.</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 FLOW - Future Learning On Web3. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Theme management
+        function initializeTheme() {
+            const themeToggle = document.querySelector('.theme-toggle');
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            
+            // Apply saved theme
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                themeToggle.textContent = '☀️';
+            } else {
+                document.body.classList.remove('dark-mode');
+                themeToggle.textContent = '🌙';
+            }
+
+            // Theme toggle handler
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                
+                if (document.body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                    themeToggle.textContent = '☀️';
+                } else {
+                    localStorage.setItem('theme', 'light');
+                    themeToggle.textContent = '🌙';
+                }
+            });
+        }
+
+        // Mobile menu functionality
+        function initializeMobileMenu() {
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const closeMenuBtn = document.querySelector('.close-menu');
+            const nav = document.querySelector('nav');
+            const navLinks = document.querySelectorAll('nav a');
+
+            // Open mobile menu
+            mobileMenuBtn.addEventListener('click', () => {
+                nav.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+
+            // Close mobile menu
+            closeMenuBtn.addEventListener('click', () => {
+                nav.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+
+            // Close menu when clicking on links
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    nav.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!nav.contains(e.target) && 
+                    !mobileMenuBtn.contains(e.target) && 
+                    nav.classList.contains('active')) {
+                    nav.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+
+        // Progress tracking with sequential access
+        function initializeProgressTracking() {
+            const progressFill = document.getElementById('progress-fill');
+            const progressPercent = document.getElementById('progress-percent');
+            const courseId = document.body.getAttribute('data-course');
+            
+            // Load progress from localStorage
+            let progress = JSON.parse(localStorage.getItem('courseProgress') || '{}');
+            
+            // Initialize course progress if it doesn't exist
+            if (!progress[courseId]) {
+                progress[courseId] = {
+                    completedLessons: [],
+                    currentLesson: 1
+                };
+                localStorage.setItem('courseProgress', JSON.stringify(progress));
+            }
+            
+            const courseProgress = progress[courseId];
+            const totalLessons = document.querySelectorAll('.lesson-card').length;
+            
+            // Update progress display
+            function updateProgress() {
+                const completedCount = courseProgress.completedLessons.length;
+                const progressValue = (completedCount / totalLessons) * 100;
+                
+                progressFill.style.width = `${progressValue}%`;
+                progressPercent.textContent = `${Math.round(progressValue)}%`;
+                
+                // Update lesson states
+                updateLessonStates();
+                
+                // Show next course button if all lessons are completed
+                if (completedCount === totalLessons) {
+                    document.getElementById('next-course-container').style.display = 'block';
+                }
+            }
+            
+            // Update lesson states based on progress
+            function updateLessonStates() {
+                const lessons = document.querySelectorAll('.lesson-card');
+                
+                lessons.forEach((lesson, index) => {
+                    const lessonNumber = index + 1;
+                    const lessonElement = document.getElementById(`lesson-${lessonNumber}`);
+                    const statusElement = lessonElement.querySelector('.lesson-status');
+                    const buttonElement = lessonElement.querySelector('.btn');
+                    
+                    if (courseProgress.completedLessons.includes(lessonNumber)) {
+                        // Lesson is completed
+                        lessonElement.classList.remove('locked');
+                        lessonElement.classList.add('completed');
+                        statusElement.textContent = 'Completed';
+                        statusElement.className = 'lesson-status status-completed';
+                        buttonElement.textContent = 'Review Lesson';
+                        buttonElement.classList.add('btn-completed');
+                    } else if (lessonNumber === courseProgress.currentLesson) {
+                        // Lesson is available (current)
+                        lessonElement.classList.remove('locked');
+                        lessonElement.classList.remove('completed');
+                        statusElement.textContent = 'Available';
+                        statusElement.className = 'lesson-status status-available';
+                        buttonElement.textContent = 'Start Lesson';
+                        buttonElement.classList.remove('btn-completed');
+                        buttonElement.disabled = false;
+                    } else if (lessonNumber < courseProgress.currentLesson) {
+                        // Lesson should be available but not completed
+                        lessonElement.classList.remove('locked');
+                        lessonElement.classList.remove('completed');
+                        statusElement.textContent = 'Available';
+                        statusElement.className = 'lesson-status status-available';
+                        buttonElement.textContent = 'Start Lesson';
+                        buttonElement.classList.remove('btn-completed');
+                        buttonElement.disabled = false;
+                    } else {
+                        // Lesson is locked
+                        lessonElement.classList.add('locked');
+                        lessonElement.classList.remove('completed');
+                        statusElement.textContent = 'Locked';
+                        statusElement.className = 'lesson-status status-locked';
+                        buttonElement.textContent = 'Complete Previous Lesson';
+                        buttonElement.classList.remove('btn-completed');
+                        buttonElement.disabled = true;
+                    }
+                });
+            }
+            
+            // Mark lesson as completed (this would be called from the lesson page)
+            function completeLesson(lessonNumber) {
+                if (!courseProgress.completedLessons.includes(lessonNumber)) {
+                    courseProgress.completedLessons.push(lessonNumber);
+                    
+                    // Unlock next lesson if it exists
+                    if (lessonNumber < totalLessons) {
+                        courseProgress.currentLesson = lessonNumber + 1;
+                    }
+                    
+                    // Save progress
+                    progress[courseId] = courseProgress;
+                    localStorage.setItem('courseProgress', JSON.stringify(progress));
+                    
+                    updateProgress();
+                }
+            }
+            
+            // For demonstration: complete lesson when button is clicked
+            document.querySelectorAll('.start-lesson').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const lessonNumber = parseInt(this.getAttribute('data-lesson'));
+                    
+                    // Only complete if it's not already completed
+                    if (!courseProgress.completedLessons.includes(lessonNumber)) {
+                        e.preventDefault();
+                        completeLesson(lessonNumber);
+                        
+                        // Show completion message
+                        alert(`Lesson ${lessonNumber} completed! Next lesson is now available.`);
+                    }
+                });
+            });
+            
+            // Initialize progress display
+            updateProgress();
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTheme();
+            initializeMobileMenu();
+            initializeProgressTracking();
+        });
+    </script>
+</body>
+</html>
